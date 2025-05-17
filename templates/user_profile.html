@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль {{ user.first_name }} | NextFeed</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 2rem;
+            background: var(--surface);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .home-btn:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+            transform: translateX(-4px);
+        }
+
+        .home-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--surface);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .profile-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meta-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-list {
+            margin-top: 2rem;
+        }
+
+        .post-list h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .post-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-date {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="home-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        На главную
+    </a>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ url_for('media_file1', filename='avatar/' ~ user.avatar) if user.avatar else url_for('static', filename='default-avatar.jpg') }}"
+                 alt="Аватар" class="avatar">
+            <div class="profile-info">
+                <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+                <div class="meta-item">
+                    <div class="meta-label">Дата регистрации</div>
+                    <div class="meta-value">{{ user.created_at.strftime('%d.%m.%Y') }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-meta">
+            <div class="meta-item">
+                <div class="meta-label">Город</div>
+                <div class="meta-value">{{ user.city or 'Не указан' }}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Дата рождения</div>
+                <div class="meta-value">{{ user.date_of_birth.strftime('%d.%m.%Y') if user.date_of_birth else 'Не указана' }}</div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-label">Количество постов</div>
+                <div class="meta-value">{{ posts | length }}</div>
+            </div>
+        </div>
+
+        <div class="meta-item">
+            <div class="meta-label">О себе</div>
+            <div class="meta-value">{{ user.about or 'Пользователь пока ничего не рассказал о себе' }}</div>
+        </div>
+
+        <div class="post-list">
+            <h3>Публикации</h3>
+            {% for post in posts %}
+                <div class="post-card">
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}" class="post-title">{{ post.title }}</a>
+                    <div class="post-date">{{ post.date.strftime('%d %B %Y') }}</div>
+                </div>
+            {% else %}
+                <div class="meta-item">
+                    <div class="meta-value">Пользователь пока не опубликовал ни одного поста</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

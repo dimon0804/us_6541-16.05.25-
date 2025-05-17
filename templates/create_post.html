@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создать пост | NextFeed</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 2rem auto;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-secondary);
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin-bottom: 2rem;
+    }
+
+    .back-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .back-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--text);
+    }
+
+    form {
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+
+    .file-input {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-input input[type="file"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+    }
+
+    .file-input label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f1f5f9;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .file-input label:hover {
+      background: #e2e8f0;
+    }
+
+    .file-input svg {
+      width: 24px;
+      height: 24px;
+      color: var(--text-secondary);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    button[type="submit"] {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex: 1;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      form {
+        padding: 1.5rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="javascript:history.back()" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      Назад
+    </a>
+
+    <h1>Создать новый пост</h1>
+
+    <form action="{{ url_for('create_post') }}" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Заголовок</label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          placeholder="Придумайте цепляющий заголовок"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          rows="5" 
+          placeholder="Расскажите подробности..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <div class="file-input">
+          <input type="file" id="cover" name="cover" accept="image/*" required>
+          <label for="cover">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            </svg>
+            <span>Выберите обложку</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="button-group">
+        <button type="submit">Опубликовать →</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

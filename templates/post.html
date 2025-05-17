@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ post.title }} | NextFeed</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--text-secondary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      margin-bottom: 2rem;
+      background: var(--surface);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .back-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+      transform: translateX(-4px);
+    }
+
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .post-card {
+      background: var(--surface);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+
+    .post-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 16px 16px 0 0;
+      transition: transform 0.3s ease;
+    }
+
+    .post-image:hover {
+      transform: scale(1.02);
+    }
+
+    .post-content {
+      padding: 2.5rem;
+    }
+
+    .post-title {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .post-meta svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .post-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .post-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .post-image {
+        height: 250px;
+      }
+
+      .post-content {
+        padding: 1.5rem;
+      }
+
+      .post-title {
+        font-size: 1.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="javascript:history.back()" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+      </svg>
+      Назад к ленте
+    </a>
+
+    <div class="post-card">
+      <img 
+        src="{{ url_for('media_file', filename=post.cover) }}" 
+        alt="Обложка поста" 
+        class="post-image"
+      >
+      
+      <div class="post-content">
+        <h1 class="post-title">{{ post.title }}</h1>
+        
+        <div class="post-meta">
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+            </svg>
+            {{ post.date.strftime('%d %B %Y') }}
+          </span>
+          •
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+            </svg>
+            <a href="{{ url_for('user_profile', user_id=post.author.id) }}" class="author-name">
+                {{ post.author.first_name }} {{ post.author.last_name }}
+            </a>
+          </span>
+        </div>
+
+        <div class="post-text">
+          {{ post.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

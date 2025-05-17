@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход / Регистрация | NextFeed</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --background: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--background);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .auth-container {
+      background: var(--surface);
+      width: 100%;
+      max-width: 480px;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      background: none;
+      border: none;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .form-section {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+    }
+
+    .form-section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .input-group {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      padding-left: 3rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 1rem;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    #message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .success {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .error {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    @media (max-width: 480px) {
+      .auth-container {
+        padding: 1.5rem;
+      }
+      
+      .tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('register')">Регистрация</button>
+      <button class="tab" onclick="switchTab('login')">Вход</button>
+    </div>
+
+    <!-- Регистрация -->
+    <div id="register" class="form-section active">
+      <div class="input-group">
+        <input type="text" id="reg-lastname" placeholder="Фамилия" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="reg-firstname" placeholder="Имя" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="reg-username" placeholder="Логин" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="email" id="reg-email" placeholder="Электронная почта" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="tel" id="reg-phone" placeholder="Телефон" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="text" id="reg-city" placeholder="Город" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="reg-password" placeholder="Пароль" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="reg-confirm" placeholder="Подтвердите пароль" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+
+      <button type="submit" onclick="register()">Создать аккаунт</button>
+    </div>
+
+    <!-- Вход -->
+    <div id="login" class="form-section">
+      <div class="input-group">
+        <input type="text" id="login-username" placeholder="Логин" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="login-password" placeholder="Пароль" />
+        <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <button type="submit" onclick="login()">Войти в аккаунт</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+    <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+
+      document.querySelector(`.tab[onclick*="${tabId}"]`).classList.add('active');
+      document.getElementById(tabId).classList.add('active');
+
+      document.getElementById('message').textContent = '';
+    }
+
+    async function register() {
+      const data = {
+        lastName: document.getElementById('reg-lastname').value.trim(),
+        firstName: document.getElementById('reg-firstname').value.trim(),
+        username: document.getElementById('reg-username').value.trim(),
+        email: document.getElementById('reg-email').value.trim(),
+        phone: document.getElementById('reg-phone').value.trim(),
+        city: document.getElementById('reg-city').value.trim(),
+        password: document.getElementById('reg-password').value
+      };
+      const confirmPassword = document.getElementById('reg-confirm').value;
+
+      const message = document.getElementById('message');
+      message.style.color = 'red';
+      message.textContent = '';
+
+      if (Object.values(data).some(v => !v) || !confirmPassword) {
+        message.textContent = 'Пожалуйста, заполните все поля.';
+        return;
+      }
+
+      if (data.password !== confirmPassword) {
+        message.textContent = 'Пароли не совпадают.';
+        return;
+      }
+
+      try {
+        const res = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          message.style.color = 'green';
+          message.textContent = result.message;
+        } else {
+          message.textContent = result.error || 'Ошибка регистрации';
+        }
+      } catch (err) {
+        message.textContent = 'Ошибка при отправке запроса.';
+        console.error(err);
+      }
+    }
+
+    async function login() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const message = document.getElementById('message');
+
+  message.style.color = 'red';
+  message.textContent = '';
+
+  if (!username || !password) {
+    message.textContent = 'Введите логин и пароль.';
+    return;
+  }
+
+  try {
+    const res = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      message.style.color = 'green';
+      message.textContent = result.message;
+      if (result.redirect) {
+        setTimeout(() => {
+          window.location.href = result.redirect;
+        }, 1000);
+      }
+    } else {
+      message.textContent = result.error || 'Ошибка входа';
+    }
+  } catch (err) {
+    message.textContent = 'Ошибка при подключении к серверу.';
+    console.error(err);
+  }
+}
+  </script>
+</body>
+</html>
